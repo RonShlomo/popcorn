@@ -28,6 +28,9 @@ function validateData(model: string, data: unknown) {
     case 'Movie':
       validateMovie(data as Prisma.MovieCreateInput); // Use the Prisma-generated type for Movie
       break;
+    case 'Showtime':
+      validateShowtime(data as Prisma.ShowtimeCreateInput); // Use the Prisma-generated type for Movie
+      break;
     default:
       break;
   }
@@ -50,4 +53,8 @@ function validateMovie(data: Prisma.MovieCreateInput) {
   if (data.releaseYear < 1) {
     throw new Error('Invalid release year');
   }
+}
+
+function validateShowtime(data1: Prisma.ShowtimeCreateInput) {
+
 }

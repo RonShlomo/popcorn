@@ -14,10 +14,21 @@ datasource db {
 }
 
 model Movie {
-  id          Int    @id @default(autoincrement())
-  title       String @unique
+  id          Int        @id @default(autoincrement())
+  title       String     @unique
   genre       String
   duration    Int
   rating      Float
   releaseYear Int
+  showtimes   Showtime[]
+}
+
+model Showtime {
+  id        Int      @id @default(autoincrement())
+  movieId   Int
+  movie     Movie    @relation(fields: [movieId], references: [id])
+  theater   String
+  startTime DateTime
+  endTime   DateTime
+  price     Float
 }
