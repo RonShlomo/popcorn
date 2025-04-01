@@ -1,6 +1,7 @@
 // src/database/prisma-middleware.ts
 
 import { Prisma, PrismaClient } from '@prisma/client';
+import { BadRequestException } from '@nestjs/common';
 
 // Prisma middleware to validate data based on model type
 export function prismaMiddleware(client: PrismaClient) {
@@ -11,6 +12,7 @@ export function prismaMiddleware(client: PrismaClient) {
       (params.action === 'create' || params.action === 'update') &&
       params.model
     ) {
+      console.log(`the requested action is ${params.action} a ${params.model}`);
       validateData(params.model, data);
     }
 
@@ -26,10 +28,10 @@ function validateData(model: string, data: unknown) {
 
   switch (model) {
     case 'Movie':
-      validateMovie(data as Prisma.MovieCreateInput); // Use the Prisma-generated type for Movie
+      validateMovie(data as Prisma.MovieCreateInput);
       break;
     case 'Showtime':
-      validateShowtime(data as Prisma.ShowtimeCreateInput); // Use the Prisma-generated type for Movie
+      validateShowtime(data as Prisma.ShowtimeUncheckedCreateInput);
       break;
     default:
       break;
@@ -38,23 +40,38 @@ function validateData(model: string, data: unknown) {
 
 // Type-safe validation for the Movie model
 function validateMovie(data: Prisma.MovieCreateInput) {
-  if (!data.title) {
-    throw new Error('Invalid title');
+  if (!data.title || typeof data.title !== 'string') {
+    throw new BadRequestException('title must be a non-empty string');
   }
-  if (!data.genre) {
-    throw new Error('Invalid genre');
+  if (!data.genre || typeof data.genre !== 'string') {
+    throw new BadRequestException('genre must be a non-empty string');
   }
-  if (data.duration <= 0) {
-    throw new Error('Invalid duration');
+  if (data.duration < 1 || typeof data.duration !== 'number') {
+    throw new BadRequestException('duration must be an integer greater than 0');
   }
-  if (data.rating < 0 || data.rating > 10) {
-    throw new Error('Invalid rating');
+  if (data.rating < 0 || data.rating > 10 || typeof data.rating !== 'number') {
+    throw new BadRequestException('rating must be a number between 0 and 10');
   }
-  if (data.releaseYear < 1) {
-    throw new Error('Invalid release year');
+  if (data.releaseYear < 1 || typeof data.releaseYear !== 'number') {
+    throw new BadRequestException('release year must be an integer greater than 0');
   }
 }
 
-function validateShowtime(data1: Prisma.ShowtimeCreateInput) {
+function validateShowtime(data: Prisma.ShowtimeUncheckedCreateInput) {
 
+  if (!data.movieId || typeof data.movieId !== 'number' || data.movieId < 0) {
+    throw new BadRequestException('movieId must be a number greater than 0');
+  }
+  if (data.price < 0 || typeof data.price !== 'number') {
+    throw new BadRequestException('price must be a number greater than 0');
+  }
+  if (!data.theater || typeof data.theater !== 'string') {
+    throw new BadRequestException('duration must be a non-empty string');
+  }
+  if (isNaN(new Date(data.startTime).getTime())) {
+    throw new BadRequestException('startTime must be a valid time stamp');
+  }
+  if (isNaN(new Date(data.endTime).getTime())) {
+    throw new BadRequestException('endTime must be a valid time stamp');
+  }
 }

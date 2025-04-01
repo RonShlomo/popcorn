@@ -26,9 +26,9 @@ model Movie {
 model Showtime {
   id        Int      @id @default(autoincrement())
   movieId   Int
+  price     Float
   movie     Movie    @relation(fields: [movieId], references: [id])
   theater   String
   startTime DateTime
   endTime   DateTime
-  price     Float
 }
