@@ -1,5 +1,3 @@
-// src/database/database.service.ts
-
 import { Injectable, OnModuleInit, OnModuleDestroy } from '@nestjs/common';
 import { PrismaClient } from '@prisma/client';
 import { prismaMiddleware } from '../../prisma/middleware'; // Import the Prisma middleware wrapper

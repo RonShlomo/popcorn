@@ -24,7 +24,9 @@ export class MoviesService {
   }
 
   async update(title: string, updatedMovie: Prisma.MovieUpdateInput) {
-    const wantedMovie = await this.databaseService.movie.findUnique({ where: { title } });
+    const wantedMovie = await this.databaseService.movie.findUnique({
+      where: { title },
+    });
     if (!wantedMovie) {
       throw new NotFoundException(`Movie with title "${title}" not found`);
     }
@@ -35,14 +37,15 @@ export class MoviesService {
         },
         data: updatedMovie,
       });
-      return;
+      return Promise<void>;
     } catch (error) {
       if (error.code === 'P2002') {
-        throw new ConflictException(`A movie with title "${updatedMovie.title}" already exists.`);
+        throw new ConflictException(
+          `A movie with title "${updatedMovie.title}" already exists.`,
+        );
       }
       throw error; // Re-throw other unexpected errors
     }
-
   }
 
   async remove(title: string) {

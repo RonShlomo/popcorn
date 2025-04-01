@@ -107,8 +107,8 @@ export class ShowtimesService {
         id: excludeId ? { not: excludeId } : undefined,
       },
     });
-
-    if (overlappingShowtime) {
+    console.log(`overlap ${overlappingShowtime}`)
+    if (overlappingShowtime?.id !== undefined) {
       throw new BadRequestException(`The requested screening time overlaps with showtime ${overlappingShowtime.id}`);
     }
   }
