@@ -7,7 +7,7 @@ Before you begin, make sure you have the following installed:
 
 --Getting Started--
 1. Clone the repository
-command: git clone <your-repository-url> cd <your-project-directory>
+command: git clone https://github.com/RonShlomo/popcorn/tree/main cd <your-project-directory>
 
 2. Install the dependencies
 In the project directory, install the necessary dependencies for the NestJS application.
