@@ -1,7 +1,6 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { BookingsController } from './bookings.controller';
 import { BookingsService } from './bookings.service';
-import { randomStringGenerator } from '@nestjs/common/utils/random-string-generator.util';
 
 describe('BookingsController', () => {
   let controller: BookingsController;
