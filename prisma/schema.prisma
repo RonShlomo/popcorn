@@ -24,11 +24,20 @@ model Movie {
 }
 
 model Showtime {
-  id        Int      @id @default(autoincrement())
+  id        Int       @id @default(autoincrement())
   movieId   Int
   price     Float
-  movie     Movie    @relation(fields: [movieId], references: [id])
+  movie     Movie     @relation(fields: [movieId], references: [id])
   theater   String
   startTime DateTime
   endTime   DateTime
+  bookings  Booking[]
+}
+
+model Booking {
+  bookingId  String   @unique @default(uuid())
+  showtimeId Int
+  showTime   Showtime @relation(fields: [showtimeId], references: [id])
+  seatNumber Int
+  userId     String
 }
