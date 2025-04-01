@@ -54,7 +54,8 @@ command: npm run start:dev
 This will start the app in development mode, and you can access it at http://localhost:3000.
 
 9. Running Tests
-NestJS uses Jest for testing. To run the tests, use the following command:
+NestJS uses Jest for testing. To run the tests, use the following commands:
+command: npm install --save-dev jest @nestjs/testing ts-jest @types/jest
 command: npm run test
 This will run all unit tests in the project.
 
